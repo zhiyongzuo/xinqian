@@ -20,6 +20,9 @@ import android.widget.SearchView;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
+import com.chiclam.android.updater.Updater;
+import com.chiclam.android.updater.UpdaterConfig;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -43,6 +46,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     private ListView lv;
     private SearchView sv;
     private static final int item1 = Menu.FIRST;
+    private static final int item2 = Menu.NONE;
     Contact[] contacts;
     Contact contact;
     String name, phone;
@@ -50,11 +54,13 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     Preferences preferences;
     public int x;//run app 后静态的值还是没有改变
     String phone2, email, photo,sex,company, army_friends, friends, classmates, family, fellowtownsman;
+    private static final String APK_URL = "https://github.com/zhiyongzuo/xinqian/tree/master/ContactBook-2.0/zzy.apk";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
 
     }
 
@@ -164,7 +170,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
                     while (it.hasNext()) {
                         String key = it.next();
                         if (key.equals("id")) {
-                            int value = (int) data.get(0).get(key);//拿到key对应的value
+                            int value = Integer.parseInt(String.valueOf(data.get(0).get(key)));//拿到key对应的value
                             Intent intent = new Intent(MainActivity.this, LookActivity.class);
                             intent.putExtra("id", value);//把id传递到下一个界面
                             startActivity(intent);
@@ -321,7 +327,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         menu.add(0, item1, 0, "切换到按单位排列");
-
+        menu.add(0, item2, 1, "更新软件");
         return true;
     }
 
@@ -334,6 +340,14 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
                 intent.setClass(MainActivity.this, SettingActivity.class);
                 MainActivity.this.startActivity(intent);
                 break;
+            case item2:
+                UpdaterConfig config = new UpdaterConfig.Builder(this)
+                        .setTitle(getResources().getString(R.string.app_name))
+                        .setDescription(getString(R.string.system_download_description))
+                        .setFileUrl(APK_URL)
+                        .setCanMediaScanner(true)
+                        .build();
+                Updater.get().showLog(true).download(config);
         }
         return true;
     }

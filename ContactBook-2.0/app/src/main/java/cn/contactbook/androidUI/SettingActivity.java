@@ -131,7 +131,7 @@ public class SettingActivity extends AppCompatActivity implements SearchView.OnQ
                     while (it.hasNext()) {
                         String key = it.next();
                         if (key.equals("id")) {
-                            int value = (int) data.get(0).get(key);//拿到key对应的value
+                            int value = Integer.parseInt(String.valueOf(data.get(0).get(key)));//拿到key对应的value
                             Intent intent = new Intent(SettingActivity.this, CompanyWorkerActivity.class);
                             intent.putExtra("id", value);//把id传递到下一个界面
                             startActivity(intent);
