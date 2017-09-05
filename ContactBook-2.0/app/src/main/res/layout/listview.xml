@@ -16,6 +16,10 @@
         android:layout_height="wrap_content"
         android:text="姓名"
         android:textSize="@dimen/font"
+<<<<<<< HEAD
         android:paddingLeft="20dp"
+=======
+        android:textColor="@color/colorPrimaryDark"
+>>>>>>> 4667a2d0ee8717b2569167b14eab8f5caa190e5a
         android:layout_marginLeft="5dp"/>
 </LinearLayout>

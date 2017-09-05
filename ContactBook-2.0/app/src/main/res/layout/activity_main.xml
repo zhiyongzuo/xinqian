@@ -23,6 +23,7 @@
             android:layout_width="wrap_content"
             android:layout_height="40dp"
             android:layout_alignParentLeft="true"
+<<<<<<< HEAD
             android:layout_alignParentStart="true" />
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/edit"
@@ -34,6 +35,11 @@
             app:layout_anchorGravity="bottom|end"
             android:layout_alignParentTop="true" android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"/>
+=======
+            android:layout_alignParentStart="true"
+            android:layout_toLeftOf="@+id/button" />
+
+>>>>>>> 4667a2d0ee8717b2569167b14eab8f5caa190e5a
     </RelativeLayout>
 
     <ListView

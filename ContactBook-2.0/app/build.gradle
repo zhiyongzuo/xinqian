@@ -43,5 +43,8 @@ dependencies {
     /* compile ('com.Android.support:appcompat-v7:23.1.1','com.android.support:recyclerview-v7:23.1.1'){
                     exclude group: "com.Android.support", module: "support-v4"
                 }*/
+<<<<<<< HEAD
     compile 'de.hdodenhof:circleimageview:2.1.0'
+=======
+>>>>>>> 4667a2d0ee8717b2569167b14eab8f5caa190e5a
 }

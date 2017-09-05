@@ -56,12 +56,20 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     public int x;//run app 后静态的值还是没有改变
     String phone2, email, photo,sex,company, army_friends, friends, classmates, family, fellowtownsman;
     private static final String APK_URL = "https://github.com/zhiyongzuo/xinqian/tree/master/ContactBook-2.0/zzy.apk";
+<<<<<<< HEAD
     EditText mEditText;
+=======
+>>>>>>> 4667a2d0ee8717b2569167b14eab8f5caa190e5a
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> 4667a2d0ee8717b2569167b14eab8f5caa190e5a
     }
 
     /**
@@ -338,6 +346,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
                 MainActivity.this.startActivity(intent);
                 break;
             case item2:
+<<<<<<< HEAD
                 AlertDialog.Builder mBuilder = new AlertDialog.Builder(this);
                 final View view = getLayoutInflater().inflate(R.layout.alert_dialog, null);
                 mBuilder.setTitle("请输入网址").setView(view)
@@ -359,6 +368,15 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
                         }
                     }
                 }).create().show();
+=======
+                UpdaterConfig config = new UpdaterConfig.Builder(this)
+                        .setTitle(getResources().getString(R.string.app_name))
+                        .setDescription(getString(R.string.system_download_description))
+                        .setFileUrl(APK_URL)
+                        .setCanMediaScanner(true)
+                        .build();
+                Updater.get().showLog(true).download(config);
+>>>>>>> 4667a2d0ee8717b2569167b14eab8f5caa190e5a
         }
         return true;
     }
