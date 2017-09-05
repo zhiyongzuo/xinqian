@@ -10,11 +10,15 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -32,6 +36,7 @@ import cn.contactbook.model.Category;
 import cn.contactbook.model.Contact;
 import cn.contactbook.model.Names;
 import cn.contactbook.service.MyService;
+import cn.contactbook.utils.Eyes;
 import cn.contactbook.viewbinder.CategoryViewBinder;
 import cn.contactbook.viewbinder.NamesViewBinder;
 import me.drakeet.multitype.Items;
@@ -53,6 +58,7 @@ public class LookActivity extends AppCompatActivity {
     private TextView tv_company;
     //
     private RecyclerView rv_army_friends;
+    private CollapsingToolbarLayout mCollapsingToolbar;
 
     private String name = "";
     private String phone = "";
@@ -85,8 +91,8 @@ public class LookActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_look);
-        tv_name = (TextView) findViewById(R.id.name);
+        setContentView(R.layout.activity_detail);
+        //tv_name = (TextView) findViewById(R.id.name);
         tv_phone = (TextView) findViewById(R.id.phone);
         tv_phone2 = (TextView) findViewById(R.id.phone2);
         tv_email = (TextView) findViewById(R.id.email);
@@ -95,6 +101,12 @@ public class LookActivity extends AppCompatActivity {
         imageView = (ImageView) findViewById(R.id.edit_imageView);
         //
         rv_army_friends = (RecyclerView) findViewById(R.id.recycler_view_army_friends);
+        //
+        AppBarLayout mAppBarLayout = (AppBarLayout)findViewById(R.id.app_bar);
+        Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
+        mCollapsingToolbar = (CollapsingToolbarLayout)findViewById(R.id.toolbar_layout);
+        Eyes.setStatusBarColorForCollapsingToolbar(this, mAppBarLayout, mCollapsingToolbar, toolbar, ContextCompat.getColor(this, R.color.colorPrimary));
+
     }
 
     public void onStart() {
@@ -118,25 +130,27 @@ public class LookActivity extends AppCompatActivity {
         family = contact[0].getFamily();
         fellowdownsman = contact[0].getFellowtownsman();
         if (army_friends!= null && !army_friends.equals("")) {
-            list_army_friends = Arrays.asList(army_friends.trim().split(","));
+            list_army_friends = Arrays.asList(army_friends.trim().split("，"));
             Log.d("army_friends ", army_friends);
-            Log.d("CommonAdapter ", "list_army_friends====" + list_army_friends.get(0) + list_army_friends.get(1));
         }
         if (friends != null &&!friends.equals("")) {
-            list_friends = Arrays.asList(friends.trim().split(","));
+            list_friends = Arrays.asList(friends.trim().split("，"));
         }
         if (classmates != null && !classmates.equals("")) {
-            list_classmates = Arrays.asList(classmates.trim().split(","));
+            list_classmates = Arrays.asList(classmates.trim().split("，"));
         }
         if (family != null && !family.equals("")) {
-            list_family = Arrays.asList(family.trim().split(","));
+            list_family = Arrays.asList(family.trim().split("，"));
         }
         if (fellowdownsman != null && !fellowdownsman.equals("")) {
-            list_fellowdownsman = Arrays.asList(fellowdownsman.trim().split(","));
+            list_fellowdownsman = Arrays.asList(fellowdownsman.trim().split("，"));
         }
 
         tv_phone.setText(phone);
-        tv_name.setText(name);
+        //tv_name.setText(name);
+        if(mCollapsingToolbar!=null) {
+            mCollapsingToolbar.setTitle(name);
+        }
         tv_phone2.setText(phone2);
         tv_email.setText(email);
         tv_sex.setText(sex);
@@ -276,8 +290,7 @@ public class LookActivity extends AppCompatActivity {
 
     //删除时弹出的提示对话框
     private void buildDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(LookActivity.this,
-                android.app.AlertDialog.THEME_DEVICE_DEFAULT_DARK);
+        AlertDialog.Builder builder = new AlertDialog.Builder(LookActivity.this);
         builder.setTitle("将要删除联系人");
         builder.setNegativeButton("确定", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {

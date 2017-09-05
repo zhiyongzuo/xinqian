@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">通讯录</string>
+    <string name="button_more">添加更多</string>
     <string name="title_activity_company_worker">CompanyWorkerActivity</string>
+    <string name="hint"></string>
     <string name="large_text">
         "Material is the metaphor.\n\n"
 

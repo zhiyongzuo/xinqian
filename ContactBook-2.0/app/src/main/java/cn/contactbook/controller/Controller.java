@@ -37,6 +37,10 @@ public class Controller {
         return dbAdapter.getContact(id);
     }
 
+    public Contact[] getContact(String company) {
+        return dbAdapter.getContact(company);
+    }
+
     //删除联系人
     public void delete(int id) {
         dbAdapter.delete(id);

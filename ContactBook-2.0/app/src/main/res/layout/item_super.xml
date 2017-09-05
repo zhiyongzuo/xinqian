@@ -7,9 +7,9 @@
 
     <View
         android:id="@+id/line"
-        android:layout_width="10px"
-        android:layout_height="40px"
-        android:background="#FFA229" />
+        android:layout_width="5dp"
+        android:layout_height="22dp"
+        android:background="@color/colorPrimary" />
 
     <TextView
         android:id="@+id/tv_group"

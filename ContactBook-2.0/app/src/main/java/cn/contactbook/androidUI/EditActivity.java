@@ -16,6 +16,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -101,7 +102,12 @@ public class EditActivity extends AppCompatActivity {
         edit_classmates.setText(classmates);
         edit_family.setText(family);
         edit_fellowdownsman.setText(fellowdownsman);
-
+      /*  edit_army_friends.setOnFocusChangeListener(mOnFocusChangeListener);
+        edit_friends.setOnFocusChangeListener(mOnFocusChangeListener);
+        edit_classmates.setOnFocusChangeListener(mOnFocusChangeListener);
+        edit_family.setOnFocusChangeListener(mOnFocusChangeListener);
+        edit_fellowdownsman.setOnFocusChangeListener(mOnFocusChangeListener);*/
+      //无效， 不知道原因
 
         et_name.setText(name);
         et_phone.setText(phone);
@@ -112,6 +118,24 @@ public class EditActivity extends AppCompatActivity {
         Bitmap bitmap = getLoacalBitmap(photo); //根据路径从本地取图片
         imageView.setImageBitmap(bitmap);    //设置Bitmap
     }
+
+  /*  View.OnFocusChangeListener mOnFocusChangeListener = new View.OnFocusChangeListener() {
+        @Override
+        public void onFocusChange(View v, boolean hasFocus) {
+            String hint;
+            EditText mEditText = (EditText)v;
+            if(hasFocus) {
+                Toast.makeText(EditActivity.this, "focus", Toast.LENGTH_SHORT).show();
+                hint = mEditText.getHint().toString();
+                mEditText.setTag(hint);
+                mEditText.setHint("");
+            } else {
+                Toast.makeText(EditActivity.this, "lose focus", Toast.LENGTH_SHORT).show();
+                hint = mEditText.getTag().toString();
+                mEditText.setHint(hint);
+            }
+        }
+    };*/
 
 
     /**

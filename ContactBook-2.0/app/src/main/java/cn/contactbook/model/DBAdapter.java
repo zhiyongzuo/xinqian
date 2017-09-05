@@ -157,6 +157,18 @@ public class DBAdapter {
                 KEY_ID + " like ? ", new String[]{id + ""}, null, null, null, null);
         return ConvertToContact(cursor);
     }
+
+    /**
+     * 根据company name 查询联系人
+     */
+    public Contact[] getContact(String company) {
+        Cursor cursor = db.query(DB_TABLE, new String[]{KEY_ID, KEY_NAME, KEY_PHONE, KEY_PHONE2, KEY_EMAIL,
+                KEY_PHOTO, KEY_SEX, KEY_COMPANY, KEY_ARMYFRIENDS, KEY_FRIENDS, KEY_CLASSMATES, KEY_FAMILY, KEY_FELLOWTOWNSMAN},
+            KEY_COMPANY + " like ? ", new String[]{company + ""}, null, null, null, null);
+        return ConvertToContact(cursor);
+    }
+
+
     /**
      * 查询所有联系人
      * @return

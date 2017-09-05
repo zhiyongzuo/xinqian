@@ -33,12 +33,13 @@
             android:name=".androidUI.AddActivity"
             android:launchMode="singleTask">
         </activity>
-        <activity android:name=".androidUI.LookActivity">
+        <activity android:name=".androidUI.LookActivity"
+            android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity android:name=".androidUI.EditActivity">
         </activity>
         <activity
-            android:name=".androidUI.SettingActivity"
+            android:name=".androidUI.SortedByCompany"
             android:launchMode="singleTask">
         </activity>
 

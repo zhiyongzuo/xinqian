@@ -21,9 +21,9 @@ import me.drakeet.multitype.ItemViewBinder;
  */
 
 public class NamesViewBinder extends ItemViewBinder<Names, NamesViewBinder.ViewHolder> {
-    public Context mContext;
-    public Contact[] contacts;
-    public String iName;
+    private Context mContext;
+    private Contact[] contacts;
+    private String iName;
     public NamesViewBinder(Context mContext, Contact[] contacts) {
         this.mContext = mContext;
         this.contacts = contacts;
@@ -41,7 +41,7 @@ public class NamesViewBinder extends ItemViewBinder<Names, NamesViewBinder.ViewH
         holder.name.setText(iName);
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    class ViewHolder extends RecyclerView.ViewHolder {
 
         @NonNull private final TextView name;
 
@@ -52,7 +52,6 @@ public class NamesViewBinder extends ItemViewBinder<Names, NamesViewBinder.ViewH
                 //getPosition(holder); 有个bug 若战友列表里第一个的名字叫 1 ，则点击会打开朋友里的第一个列表。。。。。
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(mContext, name.getText(), Toast.LENGTH_SHORT).show();
                     Intent mIntent;
                     for (int i = 0; i < contacts.length; i++) {
                         int index = contacts[i].getName().indexOf((String)name.getText());//搜索框内输入的内容在ListView各条目中的位置 ，内容不匹配就返回-1
@@ -60,9 +59,13 @@ public class NamesViewBinder extends ItemViewBinder<Names, NamesViewBinder.ViewH
                         System.out.println("iName   " + name.getText());
                         // 存在匹配的数据
                         if (index != -1) {
-                            mIntent = new Intent(mContext, LookActivity.class);
-                            mIntent.putExtra("id", contacts[i].getId());//把id传递到下一个界面
-                            mContext.startActivity(mIntent);
+                            if (contacts[i].getName().equals(name.getText())) {
+                                mIntent = new Intent(mContext, LookActivity.class);
+                                mIntent.putExtra("id", contacts[i].getId());//把id传递到下一个界面
+                                mContext.startActivity(mIntent);
+                            } else {
+                                Toast.makeText(mContext, "还没有添加此人数据", Toast.LENGTH_SHORT).show();
+                            }
                         }
                     }
                 }

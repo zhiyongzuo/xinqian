@@ -28,6 +28,8 @@ import cn.contactbook.controller.Controller;
 import cn.contactbook.model.Contact;
 import cn.contactbook.utils.PhotoHelper;
 
+import static cn.contactbook.androidUI.CompanyWorkerActivity.COMPANYWORKERACTIVITY_COMPANY_NAME;
+
 public class AddActivity extends AppCompatActivity {
     private EditText et_name;
     private EditText et_phone;
@@ -77,6 +79,12 @@ public class AddActivity extends AppCompatActivity {
         et_classmates = (EditText)findViewById(R.id.ed_classmates);
         et_family = (EditText)findViewById(R.id.edit_family);
         et_fellowstownman = (EditText)findViewById(R.id.edit_fellow_townsman);
+
+        Intent mIntent = getIntent();
+        String companyName = mIntent.getStringExtra(COMPANYWORKERACTIVITY_COMPANY_NAME);
+        if(companyName!=null && !companyName.equals("")) {
+            et_company.setText(companyName);
+        }
     }
 
     public void sure(View v) {
