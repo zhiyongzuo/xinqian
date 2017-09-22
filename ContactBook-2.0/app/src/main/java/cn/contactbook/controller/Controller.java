@@ -1,6 +1,11 @@
 package cn.contactbook.controller;
 
 import android.content.Context;
+
+import java.io.ByteArrayOutputStream;
+import java.io.ObjectOutputStream;
+
+import cn.contactbook.model.ChipsEntity;
 import cn.contactbook.model.Contact;
 import cn.contactbook.model.DBAdapter;
 
@@ -39,6 +44,10 @@ public class Controller {
 
     public Contact[] getContact(String company) {
         return dbAdapter.getContact(company);
+    }
+
+    public Contact[] getContactByName(String name) {
+        return dbAdapter.getContactByName(name);
     }
 
     //删除联系人

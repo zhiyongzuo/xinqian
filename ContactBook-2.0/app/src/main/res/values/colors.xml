@@ -4,4 +4,5 @@
     <color name="colorPrimaryDark">#259b24</color>
     <color name="colorAccent">#259b24</color>
     <color name="textColorHint">#F00</color>
+    <color name="bg_tag_default">#7cd167</color>
 </resources>

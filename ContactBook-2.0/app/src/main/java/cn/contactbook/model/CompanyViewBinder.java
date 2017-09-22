@@ -4,22 +4,16 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-
 import cn.contactbook.R;
 import cn.contactbook.androidUI.CompanyWorkerActivity;
-import cn.contactbook.androidUI.SortedByCompany;
+import cn.contactbook.utils.LetterTileProvider;
+import de.hdodenhof.circleimageview.CircleImageView;
 import me.drakeet.multitype.ItemViewBinder;
 
 import static cn.contactbook.androidUI.CompanyWorkerActivity.COMPANYWORKERACTIVITY_COMPANY_NAME;
@@ -29,6 +23,7 @@ import static cn.contactbook.androidUI.CompanyWorkerActivity.COMPANYWORKERACTIVI
  */
 public class CompanyViewBinder extends ItemViewBinder<Company, CompanyViewBinder.ViewHolder> {
     private Context mContext;
+    private LetterTileProvider mLetterTileProvider;
 
     public CompanyViewBinder(Context mContext) {
         this.mContext = mContext;
@@ -44,19 +39,23 @@ public class CompanyViewBinder extends ItemViewBinder<Company, CompanyViewBinder
     @Override
     protected void onBindViewHolder(@NonNull ViewHolder holder, @NonNull Company company) {
         holder.mTextView.setText(company.getCompany());
+        mLetterTileProvider = new LetterTileProvider(mContext);
+        holder.mImageView.setImageBitmap(mLetterTileProvider.getLetterTile(company.getCompany()));
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
         private TextView mTextView;
+        private CircleImageView mImageView;
 
         ViewHolder(View itemView) {
             super(itemView);
             mTextView = (TextView)itemView.findViewById(R.id.name);
+            mImageView = (CircleImageView)itemView.findViewById(R.id.imageView);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(mContext, CompanyWorkerActivity.class);
-                    intent.putExtra(COMPANYWORKERACTIVITY_COMPANY_NAME, mTextView.getText());//把id传递到下一个界面
+                    intent.putExtra(COMPANYWORKERACTIVITY_COMPANY_NAME, mTextView.getText());
                     mContext.startActivity(intent);
                 }
             });

@@ -7,6 +7,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import java.io.ByteArrayOutputStream;
+import java.io.ObjectOutputStream;
+
 
 /**
  * Created by dell on 2016/10/10.
@@ -46,7 +49,7 @@ public class DBAdapter {
                 KEY_NAME + " varchar(20)," + KEY_PHONE + " varchar(20)," +
                 KEY_PHONE2 + " varchar(20)," + KEY_EMAIL + " varchar(50)," +
                 KEY_PHOTO + " varchar(100)," + KEY_SEX + " varchar(10)," + KEY_COMPANY +" varchar(100)," +
-                KEY_ARMYFRIENDS + " varchar(100)," +
+                KEY_ARMYFRIENDS + " text," +
                 KEY_FRIENDS + " varchar(100)," +
                 KEY_CLASSMATES + " varchar(100)," +
                 KEY_FAMILY + " varchar(100)," +
@@ -165,6 +168,16 @@ public class DBAdapter {
         Cursor cursor = db.query(DB_TABLE, new String[]{KEY_ID, KEY_NAME, KEY_PHONE, KEY_PHONE2, KEY_EMAIL,
                 KEY_PHOTO, KEY_SEX, KEY_COMPANY, KEY_ARMYFRIENDS, KEY_FRIENDS, KEY_CLASSMATES, KEY_FAMILY, KEY_FELLOWTOWNSMAN},
             KEY_COMPANY + " like ? ", new String[]{company + ""}, null, null, null, null);
+        return ConvertToContact(cursor);
+    }
+
+    /**
+     * name 查询联系人
+     */
+    public Contact[] getContactByName(String name) {
+        Cursor cursor = db.query(DB_TABLE, new String[]{KEY_ID, KEY_NAME, KEY_PHONE, KEY_PHONE2, KEY_EMAIL,
+                        KEY_PHOTO, KEY_SEX, KEY_COMPANY, KEY_ARMYFRIENDS, KEY_FRIENDS, KEY_CLASSMATES, KEY_FAMILY, KEY_FELLOWTOWNSMAN},
+                KEY_NAME + " like ? ", new String[]{name + ""}, null, null, null, null);
         return ConvertToContact(cursor);
     }
 

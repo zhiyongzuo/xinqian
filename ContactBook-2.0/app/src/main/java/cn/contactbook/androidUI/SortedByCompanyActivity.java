@@ -7,36 +7,22 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.Menu;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.SearchView;
-import android.widget.SimpleAdapter;
-
-import com.che.superadapter.MultiAdapter;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
-import java.util.prefs.Preferences;
 
 import cn.contactbook.R;
 import cn.contactbook.controller.Controller;
 import cn.contactbook.model.Company;
 import cn.contactbook.model.CompanyViewBinder;
 import cn.contactbook.model.Contact;
+import cn.contactbook.utils.LetterTileProvider;
 import me.drakeet.multitype.Items;
 import me.drakeet.multitype.MultiTypeAdapter;
 
-import static cn.contactbook.model.DBAdapter.KEY_ARMYFRIENDS;
-import static cn.contactbook.model.DBAdapter.KEY_CLASSMATES;
-import static cn.contactbook.model.DBAdapter.KEY_FAMILY;
-import static cn.contactbook.model.DBAdapter.KEY_FELLOWTOWNSMAN;
-import static cn.contactbook.model.DBAdapter.KEY_FRIENDS;
-
-public class SortedByCompany extends AppCompatActivity implements SearchView.OnQueryTextListener, View.OnClickListener {
+public class SortedByCompanyActivity extends AppCompatActivity implements SearchView.OnQueryTextListener, View.OnClickListener {
     RecyclerView rv;  //为什么加private会有提醒呢。。。
     private MultiTypeAdapter mAdapter;
     private Items mItems;
@@ -45,6 +31,7 @@ public class SortedByCompany extends AppCompatActivity implements SearchView.OnQ
     Contact[] contacts;
     Controller controller;
     private FloatingActionButton mFloatingActionButton;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,7 +57,7 @@ public class SortedByCompany extends AppCompatActivity implements SearchView.OnQ
         sv.setQueryHint("请输入单位名称");
 
         mList = new ArrayList<>();
-        controller = new Controller(SortedByCompany.this);
+        controller = new Controller(SortedByCompanyActivity.this);
         contacts = controller.getAllContact();
 
         for (int i = 0; i < contacts.length; i++) {
@@ -81,7 +68,7 @@ public class SortedByCompany extends AppCompatActivity implements SearchView.OnQ
         }
         mAdapter = new MultiTypeAdapter();
         mItems = new Items();
-        mAdapter.register(Company.class, new CompanyViewBinder(SortedByCompany.this));
+        mAdapter.register(Company.class, new CompanyViewBinder(SortedByCompanyActivity.this));
         for(String name : mList) {
             mItems.add(new Company(name));
         }

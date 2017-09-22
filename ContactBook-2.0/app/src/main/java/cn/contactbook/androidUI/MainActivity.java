@@ -3,12 +3,16 @@ package cn.contactbook.androidUI;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -17,25 +21,35 @@ import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.SearchView;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
 import com.chiclam.android.updater.Updater;
 import com.chiclam.android.updater.UpdaterConfig;
+import com.orhanobut.logger.AndroidLogAdapter;
+import com.orhanobut.logger.Logger;
+
+import org.litepal.LitePal;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
-import java.util.prefs.Preferences;
 
 import cn.contactbook.R;
 import cn.contactbook.controller.Controller;
 import cn.contactbook.controller.GetNumber;
+import cn.contactbook.model.Album;
+import cn.contactbook.model.Company;
 import cn.contactbook.model.Contact;
+import cn.contactbook.model.Name;
+import cn.contactbook.model.NameViewBinder;
+import cn.contactbook.utils.LetterTileProvider;
+import me.drakeet.multitype.Items;
+import me.drakeet.multitype.MultiTypeAdapter;
 
+import static cn.contactbook.R.id.searchView;
 import static cn.contactbook.controller.GetNumber.lists;
 import static cn.contactbook.model.DBAdapter.KEY_ARMYFRIENDS;
 import static cn.contactbook.model.DBAdapter.KEY_CLASSMATES;
@@ -44,7 +58,7 @@ import static cn.contactbook.model.DBAdapter.KEY_FELLOWTOWNSMAN;
 import static cn.contactbook.model.DBAdapter.KEY_FRIENDS;
 
 public class MainActivity extends AppCompatActivity implements SearchView.OnQueryTextListener {
-    private ListView lv;
+    private RecyclerView rv;
     private SearchView sv;
     private static final int item1 = Menu.FIRST;
     private static final int item2 = Menu.NONE;
@@ -52,34 +66,23 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     Contact contact;
     String name, phone;
     Controller controller;
-    Preferences preferences;
-    public int x;//run app 后静态的值还是没有改变
+    public int x;
     String phone2, email, photo,sex,company, army_friends, friends, classmates, family, fellowtownsman;
-    private static final String APK_URL = "https://github.com/zhiyongzuo/xinqian/tree/master/ContactBook-2.0/zzy.apk";
-<<<<<<< HEAD
     EditText mEditText;
-=======
->>>>>>> 4667a2d0ee8717b2569167b14eab8f5caa190e5a
+    private LetterTileProvider mLetterTileProvider;
+    private MultiTypeAdapter multiTypeAdapter;
+    private Items items;
+    private int i = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-<<<<<<< HEAD
-=======
-
-
->>>>>>> 4667a2d0ee8717b2569167b14eab8f5caa190e5a
-    }
-
-    /**
-     * 将适配器显示在onStart方法中是为了让每次显示此界面时都刷新列表
-     */
-    @Override
-    public void onStart() {
-        super.onStart();
-        lv = (ListView) findViewById(R.id.listView);
-
+        Logger.addLogAdapter(new AndroidLogAdapter());
+        Logger.d("MainActivity onCreate()");
+        controller = new Controller(MainActivity.this);
+        mLetterTileProvider = new LetterTileProvider(this);
+        rv = (RecyclerView) findViewById(R.id.rv);
         sv = (SearchView) findViewById(R.id.searchView);
         //lv.setTextFilterEnabled(true);//设置lv可以被过虑
         // 设置该SearchView默认是否自动缩小为图标
@@ -91,105 +94,39 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         // 设置该SearchView内默认显示的提示文本
         sv.setQueryHint("请输入名字");
 
-        ArrayList<HashMap<String, Object>> data = new ArrayList<HashMap<String, Object>>();
-
-        controller = new Controller(MainActivity.this);
-
         //把通讯录数据库里的记录传给数据库
         x = getSharedPreferences("a", MODE_WORLD_READABLE).getInt("x", 0);
         if (x == 0) {
             GetNumber.getNumber(this);
             for(int i = 0; i< lists.size(); i++) {
-                contacts = controller.getAllContact();
                 name = lists.get(i).getName();
                 phone = lists.get(i).getNumber();
                 contact = new Contact(name, phone, phone2, email, photo,sex,company, army_friends, friends, classmates, family, fellowtownsman);
-           /*     if (contacts != null) {
-                    for(int j=0; j<contacts.length; j++) {
-                        if (contacts[j].getName().equals(name)) {
-                            controller.delete(contacts[j].getId());
-                        }
-                    }
-                }*/
-               // controller = new Controller(MainActivity.this);
-               // contacts = controller.getAllContact();
                 controller.add(contact);
             }
             x = 2;
             getSharedPreferences("a", MODE_WORLD_READABLE).edit().putInt("x", x).apply();
         }
+    }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        rv.setLayoutManager(new LinearLayoutManager(this));
+        multiTypeAdapter = new MultiTypeAdapter();
+        multiTypeAdapter.register(Name.class, new NameViewBinder(this));
+        items = new Items();
+        Controller controller = new Controller(this);
         contacts = controller.getAllContact();
-
-        if (contacts != null)
-            for (int i = 0; i < contacts.length; i++) {
-                HashMap<String, Object> item = new HashMap<String, Object>();
-                item.put("id", contacts[i].getId());
-                item.put("name", contacts[i].getName());
-                item.put("phone", contacts[i].getPhone());
-                item.put("phone2", contacts[i].getPhone2());
-                item.put("email", contacts[i].getEmail());
-                item.put("photo", contacts[i].getPhoto());
-                item.put("sex", contacts[i].getSex());
-                item.put("company", contacts[i].getCompany());
-                //
-                item.put(KEY_ARMYFRIENDS, contacts[i].getArmyFriends());
-                item.put(KEY_FRIENDS, contacts[i].getFriends());
-                item.put(KEY_CLASSMATES, contacts[i].getClassmates());
-                item.put(KEY_FAMILY, contacts[i].getFamily());
-                item.put(KEY_FELLOWTOWNSMAN, contacts[i].getFellowtownsman());
-                data.add(item);
-            }
-        //创建SimpleAdapter适配器将数据绑定到item显示控件上
-        SimpleAdapter adapter = new SimpleAdapter(this, data, R.layout.listview,
-                new String[]{"photo", "name"}, new int[]{R.id.img_company, R.id.name});
-        //把头像填充到适配器中
-        adapter.setViewBinder(new SimpleAdapter.ViewBinder() {
-
-            @Override
-            public boolean setViewValue(View view, Object data, String textRepresentation) {
-                if (view instanceof ImageView && data instanceof Bitmap) {
-                    ImageView iv = (ImageView) view;
-                    iv.setImageBitmap((Bitmap) data);
-                    return true;
-                }
-                return false;
-            }
-        });
-
-        /**
-         * 给ListView绑定适配器，并设置点击事件
-         */
-        if (lv != null) {
-            lv.setAdapter(adapter);
-            //listView点击事件
-            lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-                @Override
-                //设置点击事件要判断这个position是对应原来的list，还是搜索后的list，parent.getAdapter().getItem(position)。
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                    System.out.println("--------点击的是-----" + parent.getAdapter().getItem(position).toString());
-                    List<HashMap<String, Object>> data = new ArrayList<HashMap<String, Object>>();
-
-                    data.add((HashMap<String, Object>) parent.getAdapter().getItem(position));
-                    Set<String> keySet = data.get(0).keySet();//用Set的keySet方法取出key的集合
-                    Iterator<String> it = keySet.iterator();
-                    while (it.hasNext()) {
-                        String key = it.next();
-                        if (key.equals("id")) {
-                            int value = Integer.parseInt(String.valueOf(data.get(0).get(key)));//拿到key对应的value
-                            Intent intent = new Intent(MainActivity.this, LookActivity.class);
-                            intent.putExtra("id", value);//把id传递到下一个界面
-                            startActivity(intent);
-                        }
-                    }
-                }
-            });
+        for(int i=0; i<contacts.length; i++) {
+            items.add(new Name(contacts[i].getName()));
         }
+        multiTypeAdapter.setItems(items);
+        rv.setAdapter(multiTypeAdapter);
     }
 
     public void add(View v) {
+        Logger.d("add");
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (!Settings.canDrawOverlays(this)) {
                 Toast.makeText(this, "该软件需要悬浮窗权限，请授予！", Toast.LENGTH_SHORT).show();
@@ -239,100 +176,40 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
 
     @Override
     public boolean onQueryTextChange(String newText) {
-        ArrayList<HashMap<String, Object>> obj = searchItem(newText);
-        updateLayout(obj);
-        return false;
-
-//        if (TextUtils.isEmpty(newText)) {
-//            // 清除ListView的过滤
-//            lv.clearTextFilter();
-//        } else {
-//            // 使用用户输入的内容对ListView的列表项进行过滤
-//            lv.setFilterText(newText);
-//        }
-//        return true;
-    }
-
-    /**
-     * 搜索主要逻辑。数据库中contact的姓名和输入框中输入的文字一致就存放到新ArrayList
-     *
-     * @param name 输入框中输入的文字
-     * @return dataList  搜索结果存放的ArrayList
-     */
-    public ArrayList<HashMap<String, Object>> searchItem(String name) {
-        ArrayList dataList = new ArrayList<HashMap<String, Object>>();
+        List<String> newList = new ArrayList<>();
         for (int i = 0; i < contacts.length; i++) {
-            int index = contacts[i].getName().indexOf(name);//搜索框内输入的内容在ListView各条目中的位置 ，内容不匹配就返回-1
-            System.out.println("index-" + index);
-            // 存在匹配的数据
+            int index = contacts[i].getName().indexOf(newText);
             if (index != -1) {
-
-                HashMap<String, Object> item = new HashMap<String, Object>();
-                item.put("id", contacts[i].getId());
-                item.put("name", contacts[i].getName());
-                item.put("phone", contacts[i].getPhone());
-                item.put("phone2", contacts[i].getPhone2());
-                item.put("email", contacts[i].getEmail());
-                item.put("photo", contacts[i].getPhoto());
-                item.put("sex", contacts[i].getSex());
-                item.put("company", contacts[i].getCompany());
-
-                dataList.add(item);
-
+                newList.add(contacts[i].getName());
             }
         }
-        return dataList;
+        Items items = new Items();
+        for (String name : newList) {
+            items.add(new Name(name));
+        }
+        multiTypeAdapter.setItems(items);
+        multiTypeAdapter.notifyDataSetChanged();
+        return false;
     }
-
-    /**
-     * 更新适配器
-     *
-     * @param obj
-     */
-    public void updateLayout(ArrayList<HashMap<String, Object>> obj) {
-        lv.setAdapter(new SimpleAdapter(this, obj, R.layout.listview,
-                new String[]{"photo", "name"}, new int[]{R.id.img_company, R.id.name}));
-    }
-
-
     //监听返回键退出事件
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            // 创建退出对话框
-            AlertDialog isExit = new AlertDialog.Builder(this).create();
-            // 设置对话框标题
-            isExit.setTitle("系统提示");
-            // 设置对话框消息
-            isExit.setMessage("确定要退出吗");
-            // 添加选择按钮并注册监听
-            isExit.setButton("确定", listener);
-            isExit.setButton2("取消", listener);
-            // 显示对话框
-            isExit.show();
-
+            if (i!=2) {
+                Toast.makeText(this, "再按一次退出", Toast.LENGTH_SHORT).show();
+                i = 2;
+            } else {
+                i=0;
+                finish();
+            }
         }
         return false;
     }
-
-    private DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {
-        public void onClick(DialogInterface dialog, int which) {
-            switch (which) {
-                case AlertDialog.BUTTON_POSITIVE:// "确认"按钮退出程序
-                    finish();
-                    break;
-                case AlertDialog.BUTTON_NEGATIVE:// "取消"第二个按钮取消对话框
-                    break;
-                default:
-                    break;
-            }
-        }
-    };
 
     //菜单
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        menu.add(0, item1, 0, "切换到按单位排列");
-        menu.add(0, item2, 1, "更新软件");
+        menu.add(0, item1, 1, "切换到按单位排列");
+        menu.add(0, item2, 2, "更新软件");
         return true;
     }
 
@@ -342,41 +219,34 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         switch (item.getItemId()) {
             case item1:
                 Intent intent = new Intent();
-                intent.setClass(MainActivity.this, SortedByCompany.class);
+                intent.setClass(MainActivity.this, SortedByCompanyActivity.class);
                 MainActivity.this.startActivity(intent);
                 break;
             case item2:
-<<<<<<< HEAD
                 AlertDialog.Builder mBuilder = new AlertDialog.Builder(this);
                 final View view = getLayoutInflater().inflate(R.layout.alert_dialog, null);
                 mBuilder.setTitle("请输入网址").setView(view)
                         .setPositiveButton("ok", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        mEditText = (EditText) view.findViewById(R.id.edit_text);
-                        String websit = mEditText.getText().toString();
-                        if (!websit.equals("")) {
-                            UpdaterConfig config = new UpdaterConfig.Builder(MainActivity.this)
-                                    .setTitle(getResources().getString(R.string.app_name))
-                                    .setDescription(getString(R.string.system_download_description))
-                                    .setFileUrl(mEditText.getText().toString())
-                                    .setCanMediaScanner(true)
-                                    .build();
-                            Updater.get().showLog(true).download(config);
-                        } else {
-                            Toast.makeText(MainActivity.this, "请输入网址", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                }).create().show();
-=======
-                UpdaterConfig config = new UpdaterConfig.Builder(this)
-                        .setTitle(getResources().getString(R.string.app_name))
-                        .setDescription(getString(R.string.system_download_description))
-                        .setFileUrl(APK_URL)
-                        .setCanMediaScanner(true)
-                        .build();
-                Updater.get().showLog(true).download(config);
->>>>>>> 4667a2d0ee8717b2569167b14eab8f5caa190e5a
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                mEditText = (EditText) view.findViewById(R.id.edit_text);
+                                String websit = mEditText.getText().toString();
+                                if (!websit.equals("")) {
+                                    UpdaterConfig config = new UpdaterConfig.Builder(MainActivity.this)
+                                            .setTitle(getResources().getString(R.string.app_name))
+                                            .setDescription(getString(R.string.system_download_description))
+                                            .setFileUrl(mEditText.getText().toString())
+                                            .setCanMediaScanner(true)
+                                            .build();
+                                    Updater.get().showLog(true).download(config);
+                                } else {
+                                    Toast.makeText(MainActivity.this, "请输入网址", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        }).create().show();
+                break;
+            case searchView:
+                break;
         }
         return true;
     }

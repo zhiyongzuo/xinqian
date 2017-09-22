@@ -40,11 +40,7 @@ public class CompanyWorkerActivity extends AppCompatActivity {
         setContentView(R.layout.activity_company_worker);
         controller = new Controller(this);
         Intent intent = getIntent();
-        /*id = intent.getIntExtra("id", 0);
-        contacts = controller.getContact(id);
-        company = contacts[0].getCompany();*/
         company = intent.getStringExtra(COMPANYWORKERACTIVITY_COMPANY_NAME);
-        contacts = controller.getContact(company);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         rv = (RecyclerView)findViewById(R.id.cw_rv);
@@ -64,12 +60,17 @@ public class CompanyWorkerActivity extends AppCompatActivity {
             }
         });
 
+        Eyes.setStatusBarColorForCollapsingToolbar(this, appbarLayout, toolbarLayout, toolbar, ContextCompat.getColor(this, R.color.colorPrimary));
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        contacts = controller.getContact(company);
         adapter = new MultiTypeAdapter();
         adapter.register(Category.class, new CategoryViewBinder());
         adapter.register(Names.class, new NamesViewBinder(CompanyWorkerActivity.this, contacts));
         rv.setLayoutManager(new LinearLayoutManager(CompanyWorkerActivity.this));
-        rv.setAdapter(adapter);
-
         mItems = new Items();
         mItems.add(new Category("单位成员"));
 
@@ -78,16 +79,12 @@ public class CompanyWorkerActivity extends AppCompatActivity {
                 if (contacts[i].getCompany() !=null && !contacts[i].getCompany().equals("")) {
                     int index = contacts[i].getCompany().indexOf(company);
                     if (index != -1) {
-                        Log.d("CWA", contacts[i].getName());
-                            mItems.add(new Names(contacts[i].getName()));
+                        mItems.add(new Names(contacts[i].getName()));
                     }
                 }
             }
         }
         adapter.setItems(mItems);
-        adapter.notifyDataSetChanged();
-
-        Eyes.setStatusBarColorForCollapsingToolbar(this, appbarLayout, toolbarLayout, toolbar, ContextCompat.getColor(this, R.color.colorPrimary));
-
+        rv.setAdapter(adapter);
     }
 }

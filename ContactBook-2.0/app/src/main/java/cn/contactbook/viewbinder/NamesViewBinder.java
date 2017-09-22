@@ -11,10 +11,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import cn.contactbook.R;
-import cn.contactbook.androidUI.LookActivity;
+import cn.contactbook.androidUI.DetailActivity;
 import cn.contactbook.model.Contact;
 import cn.contactbook.model.Names;
 import me.drakeet.multitype.ItemViewBinder;
+
+import static cn.contactbook.androidUI.CompanyWorkerActivity.COMPANYWORKERACTIVITY_COMPANY_NAME;
 
 /**
  * Created by tomsdeath on 2017/8/14.
@@ -55,16 +57,12 @@ public class NamesViewBinder extends ItemViewBinder<Names, NamesViewBinder.ViewH
                     Intent mIntent;
                     for (int i = 0; i < contacts.length; i++) {
                         int index = contacts[i].getName().indexOf((String)name.getText());//搜索框内输入的内容在ListView各条目中的位置 ，内容不匹配就返回-1
-                        System.out.println("index   " + index);
-                        System.out.println("iName   " + name.getText());
                         // 存在匹配的数据
                         if (index != -1) {
                             if (contacts[i].getName().equals(name.getText())) {
-                                mIntent = new Intent(mContext, LookActivity.class);
-                                mIntent.putExtra("id", contacts[i].getId());//把id传递到下一个界面
+                                mIntent = new Intent(mContext, DetailActivity.class);
+                                mIntent.putExtra(COMPANYWORKERACTIVITY_COMPANY_NAME, contacts[i].getName());//把id传递到下一个界面
                                 mContext.startActivity(mIntent);
-                            } else {
-                                Toast.makeText(mContext, "还没有添加此人数据", Toast.LENGTH_SHORT).show();
                             }
                         }
                     }

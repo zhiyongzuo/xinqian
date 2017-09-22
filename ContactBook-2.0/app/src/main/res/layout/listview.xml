@@ -4,10 +4,10 @@
     android:layout_height="55dp"
     android:gravity="center">
 
-    <ImageView
+    <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/imageView"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:src="@drawable/ic_person_black_48dp"/>
 
     <TextView
@@ -15,11 +15,5 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="姓名"
-        android:textSize="@dimen/font"
-<<<<<<< HEAD
-        android:paddingLeft="20dp"
-=======
-        android:textColor="@color/colorPrimaryDark"
->>>>>>> 4667a2d0ee8717b2569167b14eab8f5caa190e5a
-        android:layout_marginLeft="5dp"/>
+        android:textSize="@dimen/font" />
 </LinearLayout>

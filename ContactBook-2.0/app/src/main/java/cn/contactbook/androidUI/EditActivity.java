@@ -16,15 +16,19 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Toast;
+
+import com.orhanobut.logger.AndroidLogAdapter;
+import com.orhanobut.logger.Logger;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.util.List;
 
 import cn.contactbook.R;
 import cn.contactbook.controller.Controller;
 import cn.contactbook.model.Contact;
 import cn.contactbook.utils.PhotoHelper;
+import mabbas007.tagsedittext.TagsEditText;
 
 import static cn.contactbook.model.DBAdapter.KEY_ARMYFRIENDS;
 import static cn.contactbook.model.DBAdapter.KEY_CLASSMATES;
@@ -55,7 +59,7 @@ public class EditActivity extends AppCompatActivity {
     private String classmates = "";
     private String family = "";
     private String fellowdownsman = "";
-    private EditText edit_army_friends;
+    private TagsEditText edit_army_friends;
     private EditText edit_friends;
     private EditText edit_classmates;
     private EditText edit_family;
@@ -66,8 +70,10 @@ public class EditActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         //setContentView(R.layout.activity_edit);
         setContentView(R.layout.activity_add);
+        Logger.addLogAdapter(new AndroidLogAdapter());
+        Logger.d("EditActivity onCreate()");
 
-        et_name = (EditText) findViewById(R.id.et_name);
+     /*   et_name = (EditText) findViewById(R.id.et_name);
         et_phone = (EditText) findViewById(R.id.et_phone);
         et_phone2 = (EditText) findViewById(R.id.et_phone2);
         et_email = (EditText) findViewById(R.id.et_email);
@@ -75,13 +81,13 @@ public class EditActivity extends AppCompatActivity {
         et_company = (EditText) findViewById(R.id.et_company);
         imageView = (ImageView) findViewById(R.id.edit_imageView);
         //
-        edit_army_friends = (EditText)findViewById(R.id.edit_army_friends);
+        edit_army_friends = (TagsEditText)findViewById(R.id.edit_army_friends);
         edit_friends = (EditText)findViewById(R.id.edit_friends);
         edit_classmates = (EditText)findViewById(R.id.ed_classmates);
         edit_family = (EditText)findViewById(R.id.edit_family);
-        edit_fellowdownsman = (EditText)findViewById(R.id.edit_fellow_townsman);
+        edit_fellowdownsman = (EditText)findViewById(R.id.edit_fellow_townsman);*/
 
-        Intent intent = getIntent();//接收上个活动(LookActivity)传来的数据
+        Intent intent = getIntent();//接收上个活动(DetailActivity)传来的数据
         name = intent.getStringExtra("name");
         phone = intent.getStringExtra("phone");
         phone2 = intent.getStringExtra("phone2");

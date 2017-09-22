@@ -38,12 +38,6 @@ public class AddActivity extends AppCompatActivity {
     private EditText et_sex;
     private EditText et_company;
     private ImageView imageView;
-    private EditText et_acquaintance;
-    private EditText et_armyfriends;
-    private EditText et_friends;
-    private EditText et_classmates;
-    private EditText et_family;
-    private EditText et_fellowstownman;
     private Toolbar toolbar;
 
     private String name = "";
@@ -73,18 +67,6 @@ public class AddActivity extends AppCompatActivity {
         et_sex = (EditText) findViewById(R.id.et_sex);
         et_company = (EditText) findViewById(R.id.et_company);
         imageView=(ImageView)findViewById(R.id.edit_imageView);
-        //
-        et_armyfriends = (EditText)findViewById(R.id.edit_army_friends);
-        et_friends = (EditText)findViewById(R.id.edit_friends);
-        et_classmates = (EditText)findViewById(R.id.ed_classmates);
-        et_family = (EditText)findViewById(R.id.edit_family);
-        et_fellowstownman = (EditText)findViewById(R.id.edit_fellow_townsman);
-
-        Intent mIntent = getIntent();
-        String companyName = mIntent.getStringExtra(COMPANYWORKERACTIVITY_COMPANY_NAME);
-        if(companyName!=null && !companyName.equals("")) {
-            et_company.setText(companyName);
-        }
     }
 
     public void sure(View v) {
@@ -95,19 +77,13 @@ public class AddActivity extends AppCompatActivity {
         sex = et_sex.getText().toString().trim();
         company = et_company.getText().toString().trim();
         photo=imgPath;
-        //
-        army_friends = et_armyfriends.getText().toString().trim();
-        friends = et_friends.getText().toString().trim();
-        classmates = et_classmates.getText().toString().trim();
-        family = et_family.getText().toString().trim();
-        fellowtownsman = et_fellowstownman.getText().toString().trim();
-
         if (name.equals("") || phone.equals(""))
             Toast.makeText(AddActivity.this, "请填写姓名和手机号", Toast.LENGTH_SHORT).show();
         else {
             Contact contact = new Contact(name, phone, phone2, email, photo,sex,company, army_friends, friends, classmates, family, fellowtownsman);
             Controller controller = new Controller(AddActivity.this);
             controller.add(contact);
+            Toast.makeText(this, "添加成功", Toast.LENGTH_SHORT).show();
            finish();
         }
     }

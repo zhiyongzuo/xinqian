@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:TagsEditText="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
@@ -33,8 +34,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/editsharp"
-                    android:textColor="@color/colorPrimaryDark"
-                    tools:hint="name"/>
+                    android:textColor="@color/colorPrimaryDark"/>
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
@@ -130,111 +130,6 @@
                     android:id="@+id/et_email"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/editsharp"
-                    android:textColor="@color/colorPrimaryDark"/>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:orientation="horizontal">
-                <TextView
-                    android:id="@+id/army_friends"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="战友："
-                    android:textColor="@color/colorPrimaryDark"
-                    android:textSize="@dimen/font"/>
-                <EditText
-                    android:id="@+id/edit_army_friends"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/hint"
-                    android:textColorHint="@color/textColorHint"
-                    android:background="@drawable/editsharp"/>
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:orientation="horizontal">
-                <TextView
-                    android:id="@+id/friends"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="朋友："
-                    android:textColor="@color/colorPrimaryDark"
-                    android:textSize="@dimen/font"/>
-                <EditText
-                    android:id="@+id/edit_friends"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColorHint="@color/textColorHint"
-                    android:hint="@string/hint"
-                    android:background="@drawable/editsharp"
-                    android:textColor="@color/colorPrimaryDark"/>
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:orientation="horizontal">
-                <TextView
-                    android:id="@+id/classmates"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="同学："
-                    android:textColor="@color/colorPrimaryDark"
-                    android:textSize="@dimen/font"/>
-                <EditText
-                    android:id="@+id/ed_classmates"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColorHint="@color/textColorHint"
-                    android:hint="@string/hint"
-                    android:background="@drawable/editsharp"
-                    android:textColor="@color/colorPrimaryDark"/>
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:orientation="horizontal">
-                <TextView
-                    android:id="@+id/family"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="家人："
-                    android:textColor="@color/colorPrimaryDark"
-                    android:textSize="@dimen/font"/>
-                <EditText
-                    android:id="@+id/edit_family"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColorHint="@color/textColorHint"
-                    android:hint="@string/hint"
-                    android:background="@drawable/editsharp"
-                    android:textColor="@color/colorPrimaryDark"/>
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:orientation="horizontal">
-                <TextView
-                    android:id="@+id/fellow_townsman"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="老乡："
-                    android:textColor="@color/colorPrimaryDark"
-                    android:textSize="@dimen/font"/>
-                <EditText
-                    android:id="@+id/edit_fellow_townsman"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColorHint="@color/textColorHint"
-                    android:hint="@string/hint"
                     android:background="@drawable/editsharp"
                     android:textColor="@color/colorPrimaryDark"/>
             </LinearLayout>
